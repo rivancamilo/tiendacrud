@@ -10,7 +10,7 @@ const puerto = 3900;
 
 aplicacion.use(bodyParse.urlencoded({ extended: false }));
 aplicacion.use(bodyParse.json());
-//aplicacion.set('view engine', 'ejs');
+aplicacion.set('view engine', 'ejs');
 
 aplicacion.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
@@ -35,6 +35,13 @@ mongoose
     .then((db) => console.log(`Conecion exitosa MongoDB`))
     .catch((err) => console.log(err));
 
+
+aplicacion.get('/', async(req, res) => {
+    const usuarios = await Usuarios.find()
+    res.render('paginas/index', { usuarios });
+})
+
+
 /**********************************************************
 Listar todos los usuarios
 **********************************************************/
@@ -57,7 +64,22 @@ aplicacion.get("/api/usuarios", async(req, res) => {
 });
 
 /**********************************************************
-    Registrar un Usuario
+    Registrar un Usuario desde la interfaz de nodejs
+**********************************************************/
+
+aplicacion.get("/nuevousuario", (req, res) => {
+    res.render('paginas/nuevoUser');
+});
+
+aplicacion.post("/procesarRegistro", async(req, res) => {
+
+    const usuario = new Usuarios(req.body);
+    await usuario.save();
+    res.redirect('/');
+});
+
+/**********************************************************
+    Registrar un Usuario desde la interfaz de Angular
 **********************************************************/
 aplicacion.post("/api/nuevousuario", async(req, res) => {
     const usuario = new Usuarios(req.body);
