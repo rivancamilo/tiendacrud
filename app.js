@@ -167,7 +167,7 @@ aplicacion.get("/api/editarusuario/:id", async(req, res) => {
 
 
 
-aplicacion.post("/api/editarusuario/:id", async(req, res) => {
+aplicacion.put("/api/editarusuario/:id", async(req, res) => {
     const { id } = req.params; //obtenemos el id del usuario
 
     await Usuarios.update({ _id: id }, req.body);
@@ -179,7 +179,7 @@ aplicacion.post("/api/editarusuario/:id", async(req, res) => {
 /*********************************************************
     Eliminar un usuario
 *********************************************************/
-aplicacion.get("/api/borrarusuario/:id", async(req, res) => {
+aplicacion.delete("/api/borrarusuario/:id", async(req, res) => {
 
     const { id } = req.params; //obtenemos el id del registro
     await Usuarios.remove({ _id: id }); //eliminamos el registro
